@@ -1,0 +1,11 @@
+/Users/over/SpringMvcAdminPanel/src/main/java/ru/models/Client.java
+/Users/over/SpringMvcAdminPanel/src/main/java/ru/service/ClientsService.java
+/Users/over/SpringMvcAdminPanel/src/main/java/ru/config/MvcDispatcherServletInitializer.java
+/Users/over/SpringMvcAdminPanel/src/main/java/ru/controllers/HomePageController.java
+/Users/over/SpringMvcAdminPanel/src/main/java/ru/config/SpringConfig.java
+/Users/over/SpringMvcAdminPanel/src/main/java/ru/models/Category.java
+/Users/over/SpringMvcAdminPanel/src/main/java/ru/dao/ClientsDao.java
+/Users/over/SpringMvcAdminPanel/src/main/java/ru/dao/CategoriesDao.java
+/Users/over/SpringMvcAdminPanel/src/main/java/ru/controllers/CategoriesController.java
+/Users/over/SpringMvcAdminPanel/src/main/java/ru/controllers/ClientsController.java
+/Users/over/SpringMvcAdminPanel/src/main/java/ru/Main.java

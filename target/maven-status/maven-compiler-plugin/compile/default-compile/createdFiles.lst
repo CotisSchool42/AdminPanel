@@ -1,0 +1,10 @@
+ru/controllers/CategoriesController.class
+ru/config/SpringConfig.class
+ru/dao/CategoriesDao.class
+ru/service/ClientsService.class
+ru/controllers/HomePageController.class
+ru/Main.class
+ru/controllers/ClientsController.class
+ru/models/Category.class
+ru/dao/ClientsDao.class
+ru/models/Client.class
