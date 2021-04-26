@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import ru.models.Category;
 
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class CategoriesDao {
@@ -28,13 +29,21 @@ public class CategoriesDao {
     }
 
     public Category editCategory(int id) {
-        System.out.println( jdbcTemplate.query("SELECT * FROM categories  WHERE id=?", new Object[]{id}, new BeanPropertyRowMapper<>(Category.class)).stream().findAny().orElse(null));
-        return jdbcTemplate.query("SELECT * FROM categories  WHERE id=?", new Object[]{id}, new BeanPropertyRowMapper<>(Category.class))
-                .stream().findAny().orElse(null);
+        return jdbcTemplate.query("SELECT * FROM categories  WHERE id=?", new Object[]{id},
+                new BeanPropertyRowMapper<>(Category.class)).stream().findAny().orElse(null);
     }
 
     public void updateCategory(int id, Category category) {
         System.out.println(category.getName());
         jdbcTemplate.update("UPDATE categories SET name=? WHERE id=?", category.getName(), id);
+    }
+
+    public int findByName(String categoryName) {
+        try {
+            return Objects.requireNonNull(jdbcTemplate.query("SELECT * FROM categories WHERE name=?",
+                    new BeanPropertyRowMapper<>(Category.class), categoryName).stream().findFirst().orElse(null)).getId();
+        } catch (NullPointerException e) {
+            return -1;
+        }
     }
 }

@@ -63,33 +63,6 @@
         N510 M30; Завершение программы
  */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 package ru.service;
 
 import org.springframework.data.domain.Page;

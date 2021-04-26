@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Clients</title>
+
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/css/bootstrap.min.css}"/>
+
+    <style>
+
+        nav {
+            height: 0.7%;
+        }
+        body {
+            background-color: #f5f1f1; /* Цвет фона веб-страницы */
+        }
+
+        .table-hover {
+            width: 70%;
+            margin: 3% auto auto;
+        }
+
+        .col1 {
+            width: 5%; /* Ширина ячейки */
+        }
+
+        .col2 {
+            width: 6%; /* Ширина ячейки */
+        }
+
+        .col3 {
+            width: 5%; /* Ширина ячейки */
+        }
+
+        caption {
+            display: table-caption;
+            text-align: center;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top " th:fragment="header">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/" class="navbar-left"><img src="../../../images/apple.png" width="20" height="24.3"></a>
+                </li>
+                <li><a href="/">Home</a></li>
+                <li><a href="/index">Clients</a></li>
+                <li><a href="#" th:href="@{/categories}">Categories</a></li>
+                <li><a href="#" th:href="@{/products}">Products</a></li>
+                <li><a href="#" th:href="@{/WEB-INF/views/people}">Orders</a></li>
+                <li><a href="#" th:href="@{/WEB-INF/views/people}">Broadcasts</a></li>
+                <li><a href="#" th:href="@{/WEB-INF/views/people}">Messages</a></li>
+                <li><a href="#" th:href="@{/WEB-INF/views/people}">Users</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/signin" th:href="@{/signin}"> Sign in </a></li>
+                <li>
+                    <a href="/logout" th:href="@{#}" onclick="$('#form').submit();"> Logout </a>
+                    <form style="visibility: hidden" id="form" method="post" action="#" th:action="@{/logout}"></form>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</nav>
+
+
+    <table class="table table-hover" border=1 valign="bottom">
+        <caption>
+            <caption>
+                <form th:method="GET" th:action="@{/products/add}">
+                    <input type="submit" class="btn  btn-sm btn-info" value="Add item"/>
+                </form>
+            </caption>
+        </caption>
+        <thead>
+        <tr bgcolor="#c0c0c0">
+            <th>Id</th>
+            <th>Photo</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Edit</th>
+
+        </tr>
+        </thead>
+        <tbody id="myTable">
+
+        <tr  th:each="product : ${products}">
+            <td class="col1" th:text="${product.getId()}">Id</td>
+            <td class="col2"><img th:src="${product.getPhoto_url()}" width=40 height=40/ src="" alt=""></td>
+            <td th:text="${product.getName()}">Name</td>
+            <td th:text="${product.getCategoryName()}">категория</td>
+            <td th:text="${product.getPrice()}">Цена</td>
+            <td class="col3" >
+                <form th:method="GET" th:action="@{/index/{id}/edit(id=${product.getId()})}">
+                    <input type="submit" class="btn  btn-sm btn-success" value="Edit"/>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
