@@ -3,6 +3,7 @@ ru/controllers/CategoriesController.class
 ru/dao/CategoriesDao.class
 ru/controllers/ClientsController.class
 ru/models/Category.class
+ru/controllers/ProductsController$ImageUtil.class
 ru/dao/ClientsDao.class
 ru/dao/ProductsDao.class
 ru/config/SpringConfig.class

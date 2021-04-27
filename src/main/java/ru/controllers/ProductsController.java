@@ -2,6 +2,7 @@ package ru.controllers;
 
 import lombok.Data;
 import lombok.extern.log4j.Log4j;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,10 +16,13 @@ import ru.service.ProductService;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.UUID;
 
 @Data
@@ -36,8 +40,9 @@ public class ProductsController {
 
 
     @GetMapping("/products")
-    public  String index(Model model) {
+    public  String index(Model model, Model imgUtil) {
         model.addAttribute("products", productService.index());
+        imgUtil.addAttribute("imgUtil", new ImageUtil());
         return "products/index";
     }
 
@@ -48,10 +53,12 @@ public class ProductsController {
         return "products/add";
     }
 
+    public static class ImageUtil { public String getImgData(byte[] byteData) { return Base64.getMimeEncoder().encodeToString(byteData); } }
+
     @PostMapping("/products/add")
     public String addProduct(@ModelAttribute("product") Product product, @RequestParam("image") MultipartFile file,
                              @RequestParam("category") String categoryName, @Value("${upload.path}")  String uploadPath,
-                             BindingResult errors, Model model){
+                             BindingResult errors, Model model, Model mo) throws IOException {
 
         int categoryId = categoriesDao.findByName(categoryName);
         // Проверочки
@@ -73,10 +80,10 @@ public class ProductsController {
             if (design.length == 0) {
                 System.out.println("design is empty");
             }
-            System.out.println(uploadPath + categoryId + UUID + ".png");
+
             String photoUrl = categoryId + "/" + UUID + ".png";
             Files.write(Paths.get( (uploadPath + categoryId + "/") + UUID + ".png"), file.getBytes());
-            product.setPhoto_url("images/productImages/" + photoUrl);
+            product.setPhoto_url(uploadPath + photoUrl);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -84,8 +91,21 @@ public class ProductsController {
         System.out.println(product.getPhoto_url());
         product.setCategoryName(categoryName);
         product.setCategoryId(categoryId);
+        byte[] imageBytes = IOUtils.toByteArray(new URL("file://" + product.getPhoto_url()));
+        product.setBytea(imageBytes);
         productService.addProduct(product);
+        ImageUtil k = new ImageUtil();
+
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + k.getImgData(product.getBytea()));
+
+
+ //      String base64 = Base64.getEncoder().encodeToString(imageBytes);
+
+   //     System.out.println(base64);
+
+        mo.addAttribute("imgUtil", new ImageUtil());
         model.addAttribute("products", productService.index());
+
 
         return "redirect:/products";
     }

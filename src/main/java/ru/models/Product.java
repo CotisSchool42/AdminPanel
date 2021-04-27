@@ -17,4 +17,6 @@ public class Product {
     private String product_description;
 
     private String categoryName;
+
+    private  byte[] bytea;
 }

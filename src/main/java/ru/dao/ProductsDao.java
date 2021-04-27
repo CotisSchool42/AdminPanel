@@ -21,9 +21,9 @@ public class ProductsDao {
 
 
     public void addProduct(Product product) {
-        jdbcTemplate.update("INSERT INTO product(photo_url, category, price, product_description, name, category_name)" +
-                        " VALUES (?,?,?,?,?,?)", product.getPhoto_url(), product.getCategoryId(), product.getPrice(),
-                product.getProduct_description(), product.getName(), product.getCategoryName());
+        jdbcTemplate.update("INSERT INTO product(photo_url, category, price, product_description, name, category_name, bytea)" +
+                        " VALUES (?,?,?,?,?,?,?)", product.getPhoto_url(), product.getCategoryId(), product.getPrice(),
+                product.getProduct_description(), product.getName(), product.getCategoryName(), product.getBytea());
     }
 /*
     public void deleteCategory(int id) {

@@ -98,10 +98,10 @@
         </tr>
         </thead>
         <tbody id="myTable">
-
+        <!--<img th:src=" ${product.getPhoto_url()}" width=40 height=40/ src="" alt="">-->
         <tr  th:each="product : ${products}">
             <td class="col1" th:text="${product.getId()}">Id</td>
-            <td class="col2"><img th:src="${product.getPhoto_url()}" width=40 height=40/ src="" alt=""></td>
+            <td class="col2"><img class='img-thumbnail' th:src="'data:image/jpeg;base64,' + ${imgUtil.getImgData(product.getBytea())}" /></td>
             <td th:text="${product.getName()}">Name</td>
             <td th:text="${product.getCategoryName()}">категория</td>
             <td th:text="${product.getPrice()}">Цена</td>
