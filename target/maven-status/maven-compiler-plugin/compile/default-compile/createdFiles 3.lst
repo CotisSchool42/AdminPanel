@@ -1,0 +1,15 @@
+ru/controllers/ProductsController.class
+ru/controllers/CategoriesController.class
+ru/dao/CategoriesDao.class
+ru/controllers/ClientsController.class
+ru/models/Category.class
+ru/controllers/ProductsController$ImageUtil.class
+ru/dao/ClientsDao.class
+ru/dao/ProductsDao.class
+ru/config/SpringConfig.class
+ru/service/ClientsService.class
+ru/controllers/HomePageController.class
+ru/Main.class
+ru/models/Client.class
+ru/models/Product.class
+ru/service/ProductService.class

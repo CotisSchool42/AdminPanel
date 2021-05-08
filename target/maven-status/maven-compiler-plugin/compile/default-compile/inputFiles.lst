@@ -4,7 +4,6 @@
 /Users/over/Desktop/SpringMvcAdminPanel/src/main/java/ru/dao/ProductsDao.java
 /Users/over/Desktop/SpringMvcAdminPanel/src/main/java/ru/models/Product.java
 /Users/over/Desktop/SpringMvcAdminPanel/src/main/java/ru/controllers/CategoriesController.java
-/Users/over/Desktop/SpringMvcAdminPanel/src/main/java/ru/config/MvcDispatcherServletInitializer.java
 /Users/over/Desktop/SpringMvcAdminPanel/src/main/java/ru/controllers/HomePageController.java
 /Users/over/Desktop/SpringMvcAdminPanel/src/main/java/ru/models/Client.java
 /Users/over/Desktop/SpringMvcAdminPanel/src/main/java/ru/config/SpringConfig.java

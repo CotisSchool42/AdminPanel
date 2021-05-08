@@ -9,6 +9,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomePageController {
     @GetMapping()
     public String homePage() {
-        return "home";
+        return "homePage/home";
+    }
+
+
+    @RequestMapping("500")
+    String get500ErrorPage() {
+        return "errors/500";
+    }
+
+    @RequestMapping("401")
+    String get401ErrorPage() {
+        return "errors/401";
+    }
+
+    @RequestMapping("404")
+    String get404ErrorPage() {
+        return "errors/404";
     }
 }

@@ -2,29 +2,25 @@ package ru.controllers;
 
 import lombok.Data;
 import lombok.extern.log4j.Log4j;
-import org.apache.commons.io.IOUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.dao.CategoriesDao;
+import ru.models.Client;
 import ru.models.Product;
 import ru.service.ProductService;
+import ru.utils.imageProcessing.ImageProcessing;
 
-import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.UUID;
 
+@Slf4j
 @Data
 @Controller
 public class ProductsController {
@@ -40,9 +36,9 @@ public class ProductsController {
 
 
     @GetMapping("/products")
-    public  String index(Model model, Model imgUtil) {
+    public String index(Model model, Model imgUtil) {
         model.addAttribute("products", productService.index());
-        imgUtil.addAttribute("imgUtil", new ImageUtil());
+        imgUtil.addAttribute("imgUtil", new ImageProcessing());
         return "products/index";
     }
 
@@ -53,85 +49,61 @@ public class ProductsController {
         return "products/add";
     }
 
-    public static class ImageUtil { public String getImgData(byte[] byteData) { return Base64.getMimeEncoder().encodeToString(byteData); } }
-
     @PostMapping("/products/add")
     public String addProduct(@ModelAttribute("product") Product product, @RequestParam("image") MultipartFile file,
-                             @RequestParam("category") String categoryName, @Value("${upload.path}")  String uploadPath,
-                             BindingResult errors, Model model, Model mo) throws IOException {
+                             @RequestParam("category") int categoryId,
+                             @Value("${upload.path}") String uploadPath, Model model) {
 
-        int categoryId = categoriesDao.findByName(categoryName);
-        // Проверочки
-        Path categoryPath = Paths.get(uploadPath + categoryId);
-        if (!Files.exists(categoryPath)) {
-            try {
-                Files.createDirectories(categoryPath);
-            } catch(Exception e ){
-                e.printStackTrace();
-            }
-        }
+        log.info("Path for product {} was added: {}",product.getName(), ImageProcessing.checkDir(uploadPath, categoryId));
 
-        try {
-            byte[] design = file.getBytes();
-
-            UUID uuid = UUID.randomUUID();
-            String UUID = uuid.toString();
-
-            if (design.length == 0) {
-                System.out.println("design is empty");
-            }
-
-            String photoUrl = categoryId + "/" + UUID + ".png";
-            Files.write(Paths.get( (uploadPath + categoryId + "/") + UUID + ".png"), file.getBytes());
-            product.setPhoto_url(uploadPath + photoUrl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println(product.getPhoto_url());
-        product.setCategoryName(categoryName);
+        product.setCategoryName(categoriesDao.findById(categoryId));
         product.setCategoryId(categoryId);
-        byte[] imageBytes = IOUtils.toByteArray(new URL("file://" + product.getPhoto_url()));
-        product.setBytea(imageBytes);
+        product.setBytea(ImageProcessing.writeImage(file, uploadPath, categoryId, product));
         productService.addProduct(product);
-        ImageUtil k = new ImageUtil();
 
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + k.getImgData(product.getBytea()));
-
-
- //      String base64 = Base64.getEncoder().encodeToString(imageBytes);
-
-   //     System.out.println(base64);
-
-        mo.addAttribute("imgUtil", new ImageUtil());
         model.addAttribute("products", productService.index());
-
 
         return "redirect:/products";
     }
 
 
-/*    @RequestMapping(value = "/products/add", method = RequestMethod.POST)
-    public String createImage(@RequestParam("image") MultipartFile image) {
 
-        try {
-            byte[] design = image.getBytes();
+    @GetMapping("/products/{id}/edit")
+    public String editProduct(@PathVariable("id") int id, Model model) throws IOException {
+        File fi = new File(productService.findProductById(id).getPhoto_url());
+        byte[] fileContent = Files.readAllBytes(fi.toPath());
 
-            UUID uuid = UUID.randomUUID();
-            String UUID = uuid.toString();
+        model.addAttribute("photoData", ImageProcessing.getImgData(fileContent));
+        model.addAttribute("editProduct", productService.editProduct(id));
+        model.addAttribute("category", categoriesDao.index());
+
+        return "products/edit";
+    }
 
 
-            if (design.length == 0) {
-                System.out.println("design is empty");
-            }
+    @PatchMapping("/products/{id}")
+    public String updateProduct(@ModelAttribute("editProduct") Product product, @PathVariable("id") int id,
+                                @RequestParam("image") MultipartFile file, @RequestParam("category") int categoryId,
+                                @Value("${upload.path}") String uploadPath) {
 
-            Files.write(Paths.get("/Users/over/SpringMvcAdminPanel/src/main/resources/drinks/" + UUID + ".png"), image.getBytes());
-            System.out.println(Arrays.toString(design));
+        log.info("Path for product {} exists: {}",product.getName(), ImageProcessing.checkDir(uploadPath, categoryId));
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        product.setCategoryName(categoriesDao.findById(categoryId));
+        product.setCategoryId(categoryId);
+        product.setBytea(ImageProcessing.writeImage(file, uploadPath, categoryId, product));
 
+        productService.updateProduct(id, product);
         return "redirect:/products";
-    }*/
+    }
+
+    @DeleteMapping("/products/{id}")
+    public String deleteProduct(@PathVariable("id") int id) {
+        String pathname = productService.findProductById(id).getPhoto_url();
+
+        if(new File(pathname).delete()){
+            log.info("File was deleted");
+        }else log.info("File was NOT deleted");
+        productService.deleteProduct(id);
+        return "redirect:/products";
+    }
 }

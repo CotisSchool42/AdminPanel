@@ -81,5 +81,14 @@
     <orderEntry type="library" name="Maven: org.webjars:popper.js:2.5.4" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-commons:2.4.5" level="project" />
     <orderEntry type="library" name="Maven: org.imgscalr:imgscalr-lib:4.2" level="project" />
+    <orderEntry type="library" name="jquery.sortelements" level="application" />
+    <orderEntry type="library" name="jquery.bdt" level="application" />
+    <orderEntry type="library" name="bootstrap" level="application" />
+    <orderEntry type="library" name="jquery-1.11.3" level="application" />
+    <orderEntry type="library" name="jquery" level="application" />
+    <orderEntry type="library" name="jquery-1.9.1" level="application" />
+    <orderEntry type="library" name="jquery-migrate-1.1.0" level="application" />
+    <orderEntry type="library" name="style" level="application" />
+    <orderEntry type="library" name="jquery-1.10.2" level="application" />
   </component>
 </module>

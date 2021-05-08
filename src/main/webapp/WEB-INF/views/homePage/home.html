@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Clients</title>
+
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/css/bootstrap.min.css}"/>
+
+    <style>
+
+        @import url(https://fonts.googleapis.com/css?family=Roboto+Slab|PT+Sans+Caption&subset=latin,cyrillic);
+
+        nav {
+            height: 0.7%;
+        }
+
+        body {
+            background-color: #f5f1f1;
+            overflow: hidden;
+
+        }
+
+        video {
+            width: 100%;
+            height: auto;
+            max-height: 100%;
+        }
+
+        #video-bg {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            overflow: hidden;
+            z-index: 1;
+            background: #f5f1f1 no-repeat;
+            background-size: cover;
+        }
+
+        #video-bg > video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+        }
+
+        @supports (object-fit: cover) {
+            #video-bg > video {
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+        li {
+            color: white;
+        }
+
+/*        section {
+            background: RGB(34, 34, 34);
+            color: white;
+            border-radius: 1em;
+            padding: 1em;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-right: -50%;
+            transform: translate(-50%, -50%)
+        }*/
+
+        P {
+            text-align: center
+        }
+
+        H2 {
+            text-align: center
+        }
+
+        h1 {
+            background-color: RGB(34, 34, 34); /* Цвет фона под заголовком */
+        }
+
+        *, *:before, *:after {
+            transition: .3s linear;
+        }
+        .wrap {
+            width: 450px;
+            height: 380px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            color: white;
+            line-height: 1.5;
+            margin: 50px auto 0;
+        }
+        .wrap:after {
+            content: "";
+            display: block;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: rgba(53, 60, 68, 0.4);
+            height: 100%;
+            width: 100%;
+            z-index: 1;
+        }
+        .inner {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+        }
+        h2 {
+            font-family: 'Roboto Slab', serif;
+            font-weight: normal;
+        }
+        .line {
+            display: block;
+            margin: 20px auto;
+            position: relative;
+            width: 54px;
+            height: 1px;
+            background: white;
+        }
+        .line:before {
+            content: "";
+            position: absolute;
+            width: 38px;
+            margin: 0 auto;
+            top: -3px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: white;
+        }
+        .line:after {
+            content: "";
+            position: absolute;
+            width: 22px;
+            margin: 0 auto;
+            top: 3px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: white;
+        }
+
+    </style>
+</head>
+
+<body>
+<!-- Устанавливаем изображение
+<body text="b" th:style="'background: url(/images/apple.png) no-repeat center center fixed;'">
+-->
+
+<nav class="navbar navbar-inverse navbar-fixed-top " th:fragment="header">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/" class="navbar-left"><img src="../../../images/apple.png" width="20" height="24.3"></a>
+                </li>
+                <li><a href="/">Home</a></li>
+                <li><a href="/index">Clients</a></li>
+                <li><a href="#" th:href="@{/categories}">Categories</a></li>
+                <li><a href="#" th:href="@{/products}">Products</a></li>
+                <li><a href="#" th:href="@{/WEB-INF/views/people}">Orders</a></li>
+                <li><a href="#" th:href="@{/WEB-INF/views/people}">Broadcasts</a></li>
+                <li><a href="#" th:href="@{/WEB-INF/views/people}">Messages</a></li>
+                <li><a href="#" th:href="@{/WEB-INF/views/people}">Users</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/signin" th:href="@{/signin}"> Sign in </a></li>
+                <li>
+                    <a href="/logout" th:href="@{#}" onclick="$('#form').submit();"> Logout </a>
+                    <form style="visibility: hidden" id="form" method="post" action="#" th:action="@{/logout}"></form>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</nav>
+
+<!--<nav class="navbar navbar-inverse navbar-fixed-top" th:fragment="header">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="/" class="navbar-left"><img src="images/apple.png" width="20" height="24.3"></a>
+                </li>
+                <li th:classappend="${module == 'home' ? 'active' : ''}">
+                    <a href="/">Home</a>
+                </li>
+                <li th:classappend="${module == 'tasks' ? 'active' : ''}">
+                    <a href="/index">Clients</a>
+                </li>
+                <li th:classappend="${module == 'tasks-ld' ? 'active' : ''}">
+                    <a href="#" th:href="@{/WEB-INF/views/categories}">Categories</a>
+                </li>
+                <li th:classappend="${module == 'tasks-ld' ? 'active' : ''}">
+                    <a href="#" th:href="@{/WEB-INF/views/products}">Products</a>
+                </li>
+                <li th:classappend="${module == 'tasks-ld' ? 'active' : ''}">
+                    <a href="#" th:href="@{/src/main/webapp/WEB-INF/views/people}">Orders</a>
+                </li>
+                <li th:classappend="${module == 'tasks-ld' ? 'active' : ''}">
+                    <a href="#" th:href="@{/src/main/webapp/WEB-INF/views/people}">Broadcasts</a>
+                </li>
+                <li th:classappend="${module == 'tasks-ld' ? 'active' : ''}">
+                    <a href="#" th:href="@{/src/main/webapp/WEB-INF/views/people}">Messages</a>
+                </li>
+                <li th:classappend="${module == 'tasks-ld' ? 'active' : ''}">
+                    <a href="#" th:href="@{/src/main/webapp/WEB-INF/views/people}">Users</a>
+                </li>
+            </ul>
+            &lt;!&ndash; Подключить SECURITY, прописать LOGIN, LOGOUT &ndash;&gt;
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="/signin" th:href="@{/signin}"> Sign in </a>
+                </li>
+                <li>
+                    <a href="/logout" th:href="@{#}" onclick="$('#form').submit();"> Logout </a>
+                    <form style="visibility: hidden" id="form" method="post" action="#" th:action="@{/logout}"></form>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</nav>-->
+
+<div class="wrap">
+    <div class="inner">
+        <h2>Telegram Bot Admin Panel</h2>
+        <span class="line"></span>
+        <p>Life is not all about studying. But if you can’t even conquer this little part of life, then what else can you possibly do?</p>
+    </div>
+</div>
+
+
+<div id="video-bg" class="box">
+
+    <video width="100%" height="auto" preload="auto" autoplay="autoplay" muted playsinline
+           loop="loop" poster="../../../images/Lights%20-%2032299.jpg">
+        <source src="../../../images/Lights%20-%2032299.mp4" type="video/mp4">
+        <source src="../../../images/Lights%20-%2032299.webm" type="video/webm">
+    </video>
+
+
+    <!--<section>
+        <h1 >Welcome to Telegram Bot !!!</h1>
+        <p>Этот бот может то, на что ты точно не способен.
+        <p>Я тебе абсолютно точно говорю.
+    </section>-->
+
+</div>
+</body>
+</html>

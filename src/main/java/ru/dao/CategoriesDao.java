@@ -34,16 +34,15 @@ public class CategoriesDao {
     }
 
     public void updateCategory(int id, Category category) {
-        System.out.println(category.getName());
         jdbcTemplate.update("UPDATE categories SET name=? WHERE id=?", category.getName(), id);
     }
 
-    public int findByName(String categoryName) {
+    public String findById(int categoryId) {
         try {
-            return Objects.requireNonNull(jdbcTemplate.query("SELECT * FROM categories WHERE name=?",
-                    new BeanPropertyRowMapper<>(Category.class), categoryName).stream().findFirst().orElse(null)).getId();
+            return jdbcTemplate.query("SELECT * FROM categories WHERE id=?",
+                    new BeanPropertyRowMapper<>(Category.class), categoryId).stream().findFirst().orElse(null).getName();
         } catch (NullPointerException e) {
-            return -1;
+            return null;
         }
     }
 }

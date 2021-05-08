@@ -11,7 +11,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.config.annotation.*;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -20,7 +19,6 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 
 import javax.sql.DataSource;
-import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -111,9 +109,10 @@ public class SpringConfig implements WebMvcConfigurer {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/vladimirovich");
-        dataSource.setUsername("vladimirovich");
-        dataSource.setPassword("123"); //    Можно установить пароль для базы данных.
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/postgres");
+   //     vladimirovich
+        dataSource.setUsername("over");
+     //   dataSource.setPassword("123"); //    Можно установить пароль для базы данных.
         return dataSource;
     }
 

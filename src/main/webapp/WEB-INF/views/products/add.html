@@ -34,7 +34,7 @@
             padding: 6px;
             border: 1px solid #ccc;
             border-radius: 4px;
-            resize: vertical;
+            resize: none;
         }
 
         label {
@@ -144,7 +144,7 @@
                 <select class="form-control" id="category" name="category" required>
                     <option value="">Select category</option>
                     <option th:each="category : ${category}"
-                            th:value="${category.getName()}"
+                            th:value="${category.getId()}"
                             th:text="${category.getName()}">
                     </option>
                 </select>

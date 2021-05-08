@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Clients</title>
+
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/css/bootstrap.min.css}"/>
+
+    <style>
+
+        nav {
+            height: 0.7%;
+        }
+
+        body {
+            background-color: #f5f1f1; /* Цвет фона веб-страницы */
+            overflow: hidden;
+        }
+
+        #div1 {
+            width: 35%;
+            margin-top: 5%;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #ECECEC;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        #editPhoto {
+            max-width: 350px;
+            max-height: 350px;
+
+            -webkit-box-shadow:
+                    0px 0px 0px 1px rgba(0,0,0,0.6),
+                    0px 0px 0px 7px #fff,
+                    0px 0px 0px 5px rgba(0,0,0,0.2),
+                    3px 3px 4px 4px #555;
+
+            -moz-box-shadow:
+                    0px 0px 0px 1px rgba(0,0,0,0.6),
+                    0px 0px 0px 7px #fff,
+                    0px 0px 0px 5px rgba(0,0,0,0.2),
+                    3px 3px 4px 4px #555;
+
+            box-shadow:
+                    0px 0px 0px 1px rgba(0,0,0,0.6),
+                    0px 0px 0px 7px #fff,
+                    0px 0px 0px 9px rgba(0,0,0,0.2),
+                    3px 3px 4px 4px #555;
+        }
+           /* filter: hue-rotate(180deg) saturate(4);*/
+          /*  border: 25px solid #fafafa;
+            border-top-width: 20px;
+            border-bottom-width: 80px;
+            -webkit-box-shadow: 1px 1px 2px 2px #888;
+            -moz-box-shadow: 1px 1px 3px 2px #888;
+            box-shadow: 1px 1px 2px 2px #888;*/
+
+        input[type=text], select, textarea {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: none;
+        }
+
+        label {
+            padding: 12px 12px 12px 0;
+            display: inline-block;
+        }
+
+        .col-25 {
+            float: left;
+            width: 25%;
+            margin-top: 8px;
+        }
+
+        .col-75 {
+            float: left;
+            width: 65%;
+            margin-top: 8px;
+        }
+
+        .col-50 {
+            float: bottom;
+            margin-top: 3px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+        @media screen and (max-width: 600px) {
+            .col-25, .col-75, input[type=submit] {
+                width: 100%;
+                margin-top: 0;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top " th:fragment="header">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/" class="navbar-left"><img src="../../../images/apple.png" width="20" height="24.3"></a>
+                </li>
+                <li><a href="/">Home</a></li>
+                <li><a href="/index">Clients</a></li>
+                <li><a href="#" th:href="@{/categories}">Categories</a></li>
+                <li><a href="#" th:href="@{/products}">Products</a></li>
+                <li><a href="#" th:href="@{/WEB-INF/views/people}">Orders</a></li>
+                <li><a href="#" th:href="@{/WEB-INF/views/people}">Broadcasts</a></li>
+                <li><a href="#" th:href="@{/WEB-INF/views/people}">Messages</a></li>
+                <li><a href="#" th:href="@{/WEB-INF/views/people}">Users</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/signin" th:href="@{/signin}"> Sign in </a></li>
+                <li>
+                    <a href="/logout" th:href="@{#}" onclick="$('#form').submit();"> Logout </a>
+                    <form style="visibility: hidden" id="form" method="post" action="#" th:action="@{/logout}"></form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div id="div1">
+    <form id="form2" th:method="PATCH" th:action="@{/products/{id}(id=${editProduct.getId()})}" enctype="multipart/form-data"
+          th:object="${editProduct} ">
+        <br>
+        <div class="row">
+            <div class="col-50">
+                <img id="editPhoto" th:src="'data:image/jpeg;base64,' + ${photoData}" alt="" src=""/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="image">Image upload</label>
+            </div>
+            <div class="col-75">
+                <input id="image" type="file" accept="image/*" name="image" required/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="name">Product name</label>
+            </div>
+            <div class="col-75">
+                <input type="text" th:field="*{name}" id="name" required/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="price">Product price</label>
+            </div>
+            <div class="col-75">
+                <input type="text" th:field="*{price}" id="price" pattern="[0-9]+([,.][0-9]{1,2})?" required/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="category">Select category </label>
+            </div>
+            <div class="col-75" th:object="${category}">
+                <select class="form-control" id="category" name="category" required>
+                    <option value="">Select category</option>
+                    <option th:each="category : ${category}"
+                            th:value="${category.getId()}"
+                            th:text="${category.getName()}">
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="product_description">Description</label>
+            </div>
+            <div class="col-75">
+                <textarea name="comment" id="product_description" th:field="*{product_description}" required
+                          style="height:140px"></textarea>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <input type="submit" class="btn  btn-success" value="submit">
+        </div>
+        <br>
+    </form>
+</div>
+</body>
+</html>

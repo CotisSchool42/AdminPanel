@@ -61,7 +61,7 @@ public class ClientsController {
 
         int totalPages = bookPage.getTotalPages();
 
-        if (totalPages > 0) {
+        if (totalPages >= 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
                     .boxed()
                     .collect(Collectors.toList());
