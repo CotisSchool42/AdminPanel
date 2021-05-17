@@ -43,9 +43,15 @@ public class ProductsDao {
     public void updateProduct(int id, Product product) {
         jdbcTemplate.update("UPDATE product SET name=?,photo_url=?, category_name=?, category=?, " +
                         "product_description=?, price=?, bytea=? WHERE id=?", product.getName(), product.getPhoto_url(),
-                product.getCategoryName(), product.getCategoryId(), product.getProduct_description(),
-                product.getPrice(), product.getBytea(), id);
+                product.getCategoryName(), product.getCategoryId(), product.getProduct_description(), product.getPrice(),
+                product.getBytea(), id);
+        }
+
+    public void updateProductWithoutImg(int id, Product product) {
+        jdbcTemplate.update("UPDATE product SET name=?, category_name=?, category=?, product_description=?, price=? WHERE id=?",
+                product.getName(), product.getCategoryName(), product.getCategoryId(), product.getProduct_description(), product.getPrice(), id);
     }
+
 
     public void deleteProduct(int id) {
         jdbcTemplate.update("DELETE FROM product WHERE id=?", id);

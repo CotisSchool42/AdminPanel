@@ -6,6 +6,8 @@
     <title>Clients</title>
 
     <link href="../../../css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/css/bootstrap.min.css}"/>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.1.0.js"></script>
 
     <style>
 
@@ -34,31 +36,29 @@
             max-width: 350px;
             max-height: 350px;
 
-            -webkit-box-shadow:
-                    0px 0px 0px 1px rgba(0,0,0,0.6),
-                    0px 0px 0px 7px #fff,
-                    0px 0px 0px 5px rgba(0,0,0,0.2),
-                    3px 3px 4px 4px #555;
+            -webkit-box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.6),
+            0px 0px 0px 7px #fff,
+            0px 0px 0px 5px rgba(0, 0, 0, 0.2),
+            3px 3px 4px 4px #555;
 
-            -moz-box-shadow:
-                    0px 0px 0px 1px rgba(0,0,0,0.6),
-                    0px 0px 0px 7px #fff,
-                    0px 0px 0px 5px rgba(0,0,0,0.2),
-                    3px 3px 4px 4px #555;
+            -moz-box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.6),
+            0px 0px 0px 7px #fff,
+            0px 0px 0px 5px rgba(0, 0, 0, 0.2),
+            3px 3px 4px 4px #555;
 
-            box-shadow:
-                    0px 0px 0px 1px rgba(0,0,0,0.6),
-                    0px 0px 0px 7px #fff,
-                    0px 0px 0px 9px rgba(0,0,0,0.2),
-                    3px 3px 4px 4px #555;
+            box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.6),
+            0px 0px 0px 7px #fff,
+            0px 0px 0px 9px rgba(0, 0, 0, 0.2),
+            3px 3px 4px 4px #555;
         }
-           /* filter: hue-rotate(180deg) saturate(4);*/
-          /*  border: 25px solid #fafafa;
-            border-top-width: 20px;
-            border-bottom-width: 80px;
-            -webkit-box-shadow: 1px 1px 2px 2px #888;
-            -moz-box-shadow: 1px 1px 3px 2px #888;
-            box-shadow: 1px 1px 2px 2px #888;*/
+
+        /* filter: hue-rotate(180deg) saturate(4);*/
+        /*  border: 25px solid #fafafa;
+          border-top-width: 20px;
+          border-bottom-width: 80px;
+          -webkit-box-shadow: 1px 1px 2px 2px #888;
+          -moz-box-shadow: 1px 1px 3px 2px #888;
+          box-shadow: 1px 1px 2px 2px #888;*/
 
         input[type=text], select, textarea {
             width: 100%;
@@ -99,7 +99,8 @@
             clear: both;
         }
 
-        /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+        /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on
+         top of each other instead of next to each other */
         @media screen and (max-width: 600px) {
             .col-25, .col-75, input[type=submit] {
                 width: 100%;
@@ -146,7 +147,8 @@
 </nav>
 
 <div id="div1">
-    <form id="form2" th:method="PATCH" th:action="@{/products/{id}(id=${editProduct.getId()})}" enctype="multipart/form-data"
+    <form id="form2" th:method="PATCH" th:action="@{/products/{id}(id=${editProduct.getId()})}"
+          enctype="multipart/form-data"
           th:object="${editProduct} ">
         <br>
         <div class="row">
@@ -156,10 +158,10 @@
         </div>
         <div class="row">
             <div class="col-25">
-                <label for="image">Image upload</label>
+                <label for="editPhoto">Image upload</label>
             </div>
             <div class="col-75">
-                <input id="image" type="file" accept="image/*" name="image" required/>
+                <input id="imgInput" type="file" accept="image/*" name="image"/>
             </div>
         </div>
 
@@ -209,5 +211,24 @@
         <br>
     </form>
 </div>
+
+<script>
+    function readURL(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#editPhoto').attr('src', e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#imgInput").change(function () {
+        readURL(this);
+    });
+</script>
 </body>
 </html>

@@ -54,7 +54,7 @@ public class ProductsController {
                              @RequestParam("category") int categoryId,
                              @Value("${upload.path}") String uploadPath, Model model) {
 
-        log.info("Path for product {} was added: {}",product.getName(), ImageProcessing.checkDir(uploadPath, categoryId));
+        log.info("Path for product {} was added: {}", product.getName(), ImageProcessing.checkDir(uploadPath, categoryId));
 
         product.setCategoryName(categoriesDao.findById(categoryId));
         product.setCategoryId(categoryId);
@@ -67,11 +67,9 @@ public class ProductsController {
     }
 
 
-
     @GetMapping("/products/{id}/edit")
     public String editProduct(@PathVariable("id") int id, Model model) throws IOException {
-        File fi = new File(productService.findProductById(id).getPhoto_url());
-        byte[] fileContent = Files.readAllBytes(fi.toPath());
+        byte[] fileContent = ImageProcessing.ImgData(id, productService);
 
         model.addAttribute("photoData", ImageProcessing.getImgData(fileContent));
         model.addAttribute("editProduct", productService.editProduct(id));
@@ -86,23 +84,25 @@ public class ProductsController {
                                 @RequestParam("image") MultipartFile file, @RequestParam("category") int categoryId,
                                 @Value("${upload.path}") String uploadPath) {
 
-        log.info("Path for product {} exists: {}",product.getName(), ImageProcessing.checkDir(uploadPath, categoryId));
+        log.info("Path for product {} exists: {}", product.getName(), ImageProcessing.checkDir(uploadPath, categoryId));
 
         product.setCategoryName(categoriesDao.findById(categoryId));
         product.setCategoryId(categoryId);
-        product.setBytea(ImageProcessing.writeImage(file, uploadPath, categoryId, product));
 
-        productService.updateProduct(id, product);
+        if (!file.isEmpty()) {
+            String pathname = productService.findProductById(id).getPhoto_url();
+            ImageProcessing.deleteImgData(pathname);
+            product.setBytea(ImageProcessing.writeImage(file, uploadPath, categoryId, product));
+            productService.updateProduct(id, product);
+        } else
+            productService.updateProductWithoutImg(id, product);
         return "redirect:/products";
     }
 
     @DeleteMapping("/products/{id}")
     public String deleteProduct(@PathVariable("id") int id) {
         String pathname = productService.findProductById(id).getPhoto_url();
-
-        if(new File(pathname).delete()){
-            log.info("File was deleted");
-        }else log.info("File was NOT deleted");
+        ImageProcessing.deleteImgData(pathname);
         productService.deleteProduct(id);
         return "redirect:/products";
     }

@@ -1,8 +1,10 @@
 package ru.utils.imageProcessing;
 
+import lombok.extern.slf4j.Slf4j;
 import org.imgscalr.Scalr;
 import org.springframework.web.multipart.MultipartFile;
 import ru.models.Product;
+import ru.service.ProductService;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -13,7 +15,7 @@ import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.UUID;
 
-
+@Slf4j
 public class ImageProcessing {
 
     public static boolean checkDir(String uploadPath, int categoryId) {
@@ -64,6 +66,23 @@ public class ImageProcessing {
 
             return resizeImage(design);
 
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static void deleteImgData(String pathname) {
+        if (new File(pathname).delete()) {
+            log.info("File was deleted");
+        } else log.info("File was NOT deleted");
+    }
+
+
+    public static byte[] ImgData(int id, ProductService productService) {
+        File file = new File(productService.findProductById(id).getPhoto_url());
+        try {
+            return Files.readAllBytes(file.toPath());
         } catch (IOException e) {
             e.printStackTrace();
             return null;
